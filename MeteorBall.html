@@ -12,21 +12,32 @@
   </style>
   <title>Meteor Ball</title>
 </head>
-<body>
+<body onload="playAudio()">
+<audio id="GameTheme">
+  <source src="https://www.perfectseowebsites.com/Assets/GameTheme.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
 <p>Clear Out All Blue Blocks On The Screen Before The Time Runs Out</p>
   <canvas id="gameCanvas" width="800" height="700"></canvas>
   <script>
+  var Aud = document.getElementById("GameTheme"); 
+  
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
 	var rand = Math.random();
-	
+	function playAudio() { 
+  Aud.play(); 
+} 
+	setInterval(MusicTimer, 11000);
+
+
 	
     // meteor
     const meteor = {
       x: canvas.width / 2,
       y: canvas.height - 30,
       radius: 10,
-      color: 'orange',
+      color: 'brown',
       velocityY: -2,
 	  velocityX: -2,
       gravity: 0.1,
@@ -62,6 +73,12 @@
 		ctx.fillRect(car.x, car.y, car.width, car.height);
       });
     }
+function playAudio() { 
+  Aud.play(); 
+} 
+function MusicTimer() {
+Aud.play(); 
+}
 
     function drawHumans() {
       humans.forEach(human => {
@@ -87,6 +104,27 @@
       meteor.y += meteor.velocityY;
       meteor.velocityY += meteor.gravity;
 	  meteor.x += meteor.velocityX;
+	  console.log(meteor.velocityY);
+	  
+	  //Make The Meteor Heat Up
+	  if(meteor.velocityY < 10)
+	  {
+	  meteor.color = "brown";
+	  }
+	  if(meteor.velocityY > 10 && meteor.velocityY < 20)
+	  {
+	  meteor.color = "red";
+	  }
+	  
+	  if(meteor.velocityY > 20 && meteor.velocityY < 30)
+	  {
+	  meteor.color = "orange";
+	  }
+	  
+	  if(meteor.velocityY > 30)
+	  {
+	  meteor.color = "yellow";
+	  }
 	  
       // Check for collisions with cars
       cars.forEach(car => {
