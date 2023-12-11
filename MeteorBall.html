@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    canvas {
+      border: 1px solid #000;
+      display: block;
+      margin: 20px auto;
+    }
+  </style>
+  <title>Meteor Ball</title>
+</head>
+<body>
+<p>Clear Out All Blue Blocks On The Screen Before The Time Runs Out</p>
+  <canvas id="gameCanvas" width="800" height="700"></canvas>
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+	var rand = Math.random();
+	
+	
+    // meteor
+    const meteor = {
+      x: canvas.width / 2,
+      y: canvas.height - 30,
+      radius: 10,
+      color: 'orange',
+      velocityY: -2,
+	  velocityX: -2,
+      gravity: 0.1,
+    };
+
+    // Cars
+    const cars = [
+      { x: Math.random() * canvas.width, y: Math.random() * canvas.height, width: 50, height: 40, value: 2000 },
+      { x: Math.random() * canvas.width, y: Math.random() * canvas.height, width: 50, height: 40, value: 2000 },
+	  { x: Math.random() * canvas.width, y: Math.random() * canvas.height, width: 60, height: 40, value: 2000 },
+	  { x: Math.random() * canvas.width, y: Math.random() * canvas.height, width: 50, height: 40, value: 2000 },
+      // Add more cars with different values
+    ];
+
+    // Humans
+    const humans = [];
+
+    // Score
+    let score = 0;
+
+    function drawmeteor() {
+      ctx.beginPath();
+      ctx.arc(meteor.x, meteor.y, meteor.radius, 0, Math.PI * 2);
+      ctx.fillStyle = meteor.color;
+      ctx.fill();
+      ctx.closePath();
+    }
+
+    function drawCars() {
+      cars.forEach(car => {
+        ctx.fillStyle = 'blue';
+        rand = Math.random();
+		ctx.fillRect(car.x, car.y, car.width, car.height);
+      });
+    }
+
+    function drawHumans() {
+      humans.forEach(human => {
+        ctx.fillStyle = 'red';
+        ctx.fillRect(human.x, human.y, 20, 20);
+      });
+    }
+
+    function drawScore() {
+      ctx.font = '20px Arial';
+      ctx.fillStyle = 'black';
+      ctx.fillText('Score: ' + score, 10, 30);
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      drawmeteor();
+      drawCars();
+      drawHumans();
+      drawScore();
+
+      meteor.y += meteor.velocityY;
+      meteor.velocityY += meteor.gravity;
+	  meteor.x += meteor.velocityX;
+	  
+      // Check for collisions with cars
+      cars.forEach(car => {
+        if (
+          meteor.x + meteor.radius > car.x &&
+          meteor.x - meteor.radius < car.x + car.width &&
+          meteor.y + meteor.radius > car.y &&
+          meteor.y - meteor.radius < car.y + car.height
+        ) {
+          score += car.value;
+          // Remove the car
+          cars.splice(cars.indexOf(car), 1);
+        }
+      });
+      
+	  //Keep meteor On Off Map
+	  if(meteor.x > 800)
+	  {
+	  meteor.x = 0;
+	  }
+	  if(meteor.x < 0)
+	  {
+	  meteor.x=800;
+	  }
+	  if(meteor.y <= 0)
+	  {
+	  meteor.y = 700;
+	  }
+	  if(meteor.y > 700)
+	  {
+	  meteor.y = 0;
+	  }
+      // Check for collisions with humans
+      humans.forEach(human => {
+        if (
+          meteor.x + meteor.radius > human.x &&
+          meteor.x - meteor.radius < human.x &&
+          meteor.y + meteor.radius > human.y &&
+          meteor.y - meteor.radius < human.y 
+        ) {
+          // Game over logic goes here
+          alert('Game Over! Your Score: ' + score);
+          document.location.reload();
+        }
+      });
+
+      requestAnimationFrame(draw);
+    }
+
+    // Generate humans randomly
+    function generateHumans() {
+      humans.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height });
+      setTimeout(generateHumans, 3000);
+    }
+
+function generateCars()
+{
+ cars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, width: 60, height: 40, value: 2000 });
+      setTimeout(generateCars, 3000);
+}
+    // Start the game
+    generateHumans();
+	generateCars();
+    draw();
+
+    // Handle user input (e.g., meteor movement)
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowUp' && meteor.y > meteor.radius) {
+        meteor.velocityY = -5;
+      }
+	  
+	    if (e.key === 'ArrowDown' && meteor.y > meteor.radius) {
+        meteor.velocityY = +5;
+      }
+	  
+	  	    if (e.key === 'ArrowRight' && meteor.x > meteor.radius) {
+        meteor.velocityX = +5;
+      }
+	  	  	    if (e.key === 'ArrowLeft' && meteor.x > meteor.radius) {
+        meteor.velocityX = -5;
+      }
+    });
+  </script>
+</body>
+</html>
