@@ -28,7 +28,7 @@
 	function playAudio() { 
   Aud.play(); 
 } 
-	setInterval(MusicTimer, 11000);
+	//setInterval(MusicTimer, 11000);
 
 
 	
@@ -49,8 +49,11 @@
       { x: Math.random() * canvas.width, y: Math.random() * canvas.height, width: 50, height: 40, value: 2000 },
 	  { x: Math.random() * canvas.width, y: Math.random() * canvas.height, width: 60, height: 40, value: 2000 },
 	  { x: Math.random() * canvas.width, y: Math.random() * canvas.height, width: 50, height: 40, value: 2000 },
-      // Add more cars with different values
+	  { x: Math.random() * canvas.width, y: Math.random() * canvas.height, width: 50, height: 40, value: 2000 },
+	  { x: Math.random() * canvas.width, y: Math.random() * canvas.height, width: 50, height: 40, value: 2000 },
+	  { x: Math.random() * canvas.width, y: Math.random() * canvas.height, width: 50, height: 40, value: 2000 },
     ];
+	
 
     // Humans
     const humans = [];
@@ -105,8 +108,19 @@ Aud.play();
       meteor.y += meteor.velocityY;
       meteor.velocityY += meteor.gravity;
 	  meteor.x += meteor.velocityX;
-	  console.log(meteor.velocityY);
 	  
+	//Win logic	  	
+	count = cars.length;
+		
+		
+		if (count == 0)
+		{
+
+		 alert('You Win! Your Score: ' + score);
+		 document.location.reload(); 
+		}
+
+	
 	  //Make The Meteor Heat Up
 	  if(meteor.velocityY < 10)
 	  {
@@ -171,6 +185,7 @@ Aud.play();
           document.location.reload();
         }
       });
+	  
 
       requestAnimationFrame(draw);
     }
