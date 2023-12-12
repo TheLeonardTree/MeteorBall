@@ -17,7 +17,7 @@
   <source src="https://www.perfectseowebsites.com/Assets/GameTheme.mp3" type="audio/mpeg">
   Your browser does not support the audio element.
 </audio>
-<p>Clear Out All Blue Blocks On The Screen Before The Time Runs Out</p>
+<center><h2>Clear Out All Blue Blocks On The Screen Before The Time Runs Out</h2></center>
   <canvas id="gameCanvas" width="800" height="700"></canvas>
   <script>
   var Aud = document.getElementById("GameTheme"); 
@@ -100,7 +100,8 @@ Aud.play();
       drawCars();
       drawHumans();
       drawScore();
-
+	  Aud.play(); 
+	  
       meteor.y += meteor.velocityY;
       meteor.velocityY += meteor.gravity;
 	  meteor.x += meteor.velocityX;
