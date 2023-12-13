@@ -17,10 +17,15 @@
   <source src="https://www.perfectseowebsites.com/Assets/GameTheme.mp3" type="audio/mpeg">
   Your browser does not support the audio element.
 </audio>
+<audio id="CarSmashSound">
+  <source src="https://www.perfectseowebsites.com/Assets/CarSmashedVideoGame.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
 <center><h2>Clear Out All Blue Blocks On The Screen Before The Time Runs Out</h2></center>
   <canvas id="gameCanvas" width="800" height="700"></canvas>
   <script>
   var Aud = document.getElementById("GameTheme"); 
+  var Smash = document.getElementById("CarSmashSound"); 
   
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
@@ -28,8 +33,10 @@
 	function playAudio() { 
   Aud.play(); 
 } 
-	//setInterval(MusicTimer, 11000);
-
+function CarSmashSound()
+{
+Smash.play();
+}
 
 	
     // meteor
@@ -79,9 +86,6 @@
 function playAudio() { 
   Aud.play(); 
 } 
-function MusicTimer() {
-Aud.play(); 
-}
 
     function drawHumans() {
       humans.forEach(human => {
@@ -111,7 +115,6 @@ Aud.play();
 	  
 	//Win logic	  	
 	count = cars.length;
-		
 		
 		if (count == 0)
 		{
@@ -152,6 +155,7 @@ Aud.play();
           score += car.value;
           // Remove the car
           cars.splice(cars.indexOf(car), 1);
+		 CarSmashSound();
         }
       });
       
